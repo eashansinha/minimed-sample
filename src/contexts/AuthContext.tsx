@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { User, LoginCredentials } from '@/types/auth';
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
