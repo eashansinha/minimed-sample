@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import LanguageDropdown from '@/components/LanguageDropdown';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -54,11 +56,85 @@ import { format } from 'date-fns';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [glucoseReadings, setGlucoseReadings] = useState<GlucoseReading[]>([]);
   const [deviceStatus, setDeviceStatus] = useState<DeviceStatus | null>(null);
   const [dailySummary, setDailySummary] = useState<ReturnType<typeof generateDailySummary> | null>(null);
+  const [translations, setTranslations] = useState({
+    overview: 'Overview',
+    glucoseMonitoring: 'Glucose Monitoring',
+    insulinManagement: 'Insulin Management',
+    deviceStatus: 'Device Status',
+    reports: 'Reports',
+    settings: 'Settings',
+    myAccount: 'My Account',
+    profile: 'Profile',
+    signOut: 'Sign out',
+    welcomeBack: 'Welcome back',
+    diabetesOverview: "Here's your diabetes management overview for today",
+    currentGlucose: 'Current Glucose',
+    timeInRange: 'Time in Range',
+    totalInsulinToday: 'Total Insulin Today',
+    pumpStatus: 'Pump Status',
+    battery: 'Battery',
+    reservoir: 'Reservoir',
+    units: 'units',
+    glucoseTrend: '24-Hour Glucose Trend',
+    glucoseTrendDesc: 'Your glucose levels over the past 24 hours',
+    timeInRangeTitle: 'Time in Range',
+    timeInRangeDesc: 'Distribution of glucose levels today',
+    recentActivity: 'Recent Activity',
+    recentActivityDesc: 'Your latest insulin deliveries and glucose readings',
+    bolus: 'Bolus',
+    basal: 'Basal',
+    delivery: 'Delivery',
+    carbs: 'carbs',
+    belowRange: 'Below Range',
+    inRange: 'In Range',
+    aboveRange: 'Above Range'
+  });
+
+  useEffect(() => {
+    const loadTranslations = async () => {
+      const newTranslations = {
+        overview: await t('Overview'),
+        glucoseMonitoring: await t('Glucose Monitoring'),
+        insulinManagement: await t('Insulin Management'),
+        deviceStatus: await t('Device Status'),
+        reports: await t('Reports'),
+        settings: await t('Settings'),
+        myAccount: await t('My Account'),
+        profile: await t('Profile'),
+        signOut: await t('Sign out'),
+        welcomeBack: await t('Welcome back'),
+        diabetesOverview: await t("Here's your diabetes management overview for today"),
+        currentGlucose: await t('Current Glucose'),
+        timeInRange: await t('Time in Range'),
+        totalInsulinToday: await t('Total Insulin Today'),
+        pumpStatus: await t('Pump Status'),
+        battery: await t('Battery'),
+        reservoir: await t('Reservoir'),
+        units: await t('units'),
+        glucoseTrend: await t('24-Hour Glucose Trend'),
+        glucoseTrendDesc: await t('Your glucose levels over the past 24 hours'),
+        timeInRangeTitle: await t('Time in Range'),
+        timeInRangeDesc: await t('Distribution of glucose levels today'),
+        recentActivity: await t('Recent Activity'),
+        recentActivityDesc: await t('Your latest insulin deliveries and glucose readings'),
+        bolus: await t('Bolus'),
+        basal: await t('Basal'),
+        delivery: await t('Delivery'),
+        carbs: await t('carbs'),
+        belowRange: await t('Below Range'),
+        inRange: await t('In Range'),
+        aboveRange: await t('Above Range')
+      };
+      setTranslations(newTranslations);
+    };
+    loadTranslations();
+  }, [t]);
 
   useEffect(() => {
     // Initialize mock data
@@ -109,18 +185,18 @@ const Dashboard = () => {
 
   // Time in Range pie chart data
   const timeInRangeData = dailySummary ? [
-    { name: 'Below Range', value: dailySummary.timeInRange.below, color: '#ef4444' },
-    { name: 'In Range', value: dailySummary.timeInRange.inRange, color: '#10b981' },
-    { name: 'Above Range', value: dailySummary.timeInRange.above, color: '#f59e0b' }
+    { name: translations.belowRange, value: dailySummary.timeInRange.below, color: '#ef4444' },
+    { name: translations.inRange, value: dailySummary.timeInRange.inRange, color: '#10b981' },
+    { name: translations.aboveRange, value: dailySummary.timeInRange.above, color: '#f59e0b' }
   ] : [];
 
   const sidebarItems = [
-    { icon: Home, label: 'Overview', active: true },
-    { icon: Activity, label: 'Glucose Monitoring' },
-    { icon: Droplet, label: 'Insulin Management' },
-    { icon: Wifi, label: 'Device Status' },
-    { icon: FileText, label: 'Reports' },
-    { icon: Settings, label: 'Settings' }
+    { icon: Home, label: translations.overview, active: true },
+    { icon: Activity, label: translations.glucoseMonitoring },
+    { icon: Droplet, label: translations.insulinManagement },
+    { icon: Wifi, label: translations.deviceStatus },
+    { icon: FileText, label: translations.reports },
+    { icon: Settings, label: translations.settings }
   ];
 
   return (
@@ -144,6 +220,8 @@ const Dashboard = () => {
           </div>
 
           <div className="flex items-center space-x-4">
+            <LanguageDropdown />
+            
             <button className="relative p-2 hover:bg-gray-100 rounded-lg">
               <Bell className="h-5 w-5 text-gray-600" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
@@ -160,20 +238,20 @@ const Dashboard = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel>{translations.myAccount}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <User className="mr-2 h-4 w-4" />
-                  Profile
+                  {translations.profile}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Settings className="mr-2 h-4 w-4" />
-                  Settings
+                  {translations.settings}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
-                  Sign out
+                  {translations.signOut}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -218,10 +296,10 @@ const Dashboard = () => {
           {/* Welcome Message */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900">
-              Welcome back, {user?.name}
+              {translations.welcomeBack}, {user?.name}
             </h1>
             <p className="text-gray-600">
-              Here's your diabetes management overview for today
+              {translations.diabetesOverview}
             </p>
           </div>
 
@@ -231,7 +309,7 @@ const Dashboard = () => {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600">
-                  Current Glucose
+                  {translations.currentGlucose}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -256,7 +334,7 @@ const Dashboard = () => {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600">
-                  Time in Range
+                  {translations.timeInRange}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -276,7 +354,7 @@ const Dashboard = () => {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600">
-                  Total Insulin Today
+                  {translations.totalInsulinToday}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -285,7 +363,7 @@ const Dashboard = () => {
                     <p className="text-3xl font-bold text-blue-600">
                       {dailySummary?.totalInsulin || '--'}
                     </p>
-                    <p className="text-sm text-gray-500">units</p>
+                    <p className="text-sm text-gray-500">{translations.units}</p>
                   </div>
                   <Droplet className="h-8 w-8 text-blue-500" />
                 </div>
@@ -296,20 +374,20 @@ const Dashboard = () => {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-gray-600">
-                  Pump Status
+                  {translations.pumpStatus}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">Battery</span>
+                    <span className="text-sm text-gray-500">{translations.battery}</span>
                     <div className="flex items-center space-x-2">
                       <Progress value={deviceStatus?.batteryLevel} className="w-20 h-2" />
                       <span className="text-sm font-medium">{deviceStatus?.batteryLevel.toFixed(0)}%</span>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">Reservoir</span>
+                    <span className="text-sm text-gray-500">{translations.reservoir}</span>
                     <span className="text-sm font-medium">{deviceStatus?.reservoirLevel.toFixed(0)}U</span>
                   </div>
                 </div>
@@ -322,9 +400,9 @@ const Dashboard = () => {
             {/* Glucose Trend Chart */}
             <Card className="lg:col-span-2">
               <CardHeader>
-                <CardTitle>24-Hour Glucose Trend</CardTitle>
+                <CardTitle>{translations.glucoseTrend}</CardTitle>
                 <CardDescription>
-                  Your glucose levels over the past 24 hours
+                  {translations.glucoseTrendDesc}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -365,9 +443,9 @@ const Dashboard = () => {
             {/* Time in Range Pie Chart */}
             <Card>
               <CardHeader>
-                <CardTitle>Time in Range</CardTitle>
+                <CardTitle>{translations.timeInRangeTitle}</CardTitle>
                 <CardDescription>
-                  Distribution of glucose levels today
+                  {translations.timeInRangeDesc}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -407,9 +485,9 @@ const Dashboard = () => {
           {/* Recent Activity */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
+              <CardTitle>{translations.recentActivity}</CardTitle>
               <CardDescription>
-                Your latest insulin deliveries and glucose readings
+                {translations.recentActivityDesc}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -428,11 +506,11 @@ const Dashboard = () => {
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">
-                          {delivery.type === 'bolus' ? 'Bolus' : 'Basal'} Delivery
+                          {delivery.type === 'bolus' ? translations.bolus : translations.basal} {translations.delivery}
                         </p>
                         <p className="text-sm text-gray-500">
-                          {format(delivery.timestamp, 'HH:mm')} - {delivery.amount.toFixed(1)} units
-                          {delivery.carbsEntered && ` • ${delivery.carbsEntered}g carbs`}
+                          {format(delivery.timestamp, 'HH:mm')} - {delivery.amount.toFixed(1)} {translations.units}
+                          {delivery.carbsEntered && ` • ${delivery.carbsEntered}g ${translations.carbs}`}
                         </p>
                       </div>
                     </div>

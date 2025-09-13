@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { translationService } from '@/services/translationService';
 
 export type Language = 'en' | 'es' | 'fr' | 'de';
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+  t: (text: string) => Promise<string>;
+  tSync: (key: string) => string;
 }
 
 const translations: Record<Language, Record<string, string>> = {
@@ -68,12 +70,19 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
 
-  const t = (key: string): string => {
+  const t = async (text: string): Promise<string> => {
+    if (language === 'en') {
+      return text;
+    }
+    return await translationService.translate(text, language, 'en');
+  };
+
+  const tSync = (key: string): string => {
     return translations[language][key] || key;
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, tSync }}>
       {children}
     </LanguageContext.Provider>
   );

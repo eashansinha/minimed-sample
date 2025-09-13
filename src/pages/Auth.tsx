@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import LanguageDropdown from '@/components/LanguageDropdown';
 import { Eye, EyeOff, AlertCircle, ArrowLeft } from 'lucide-react';
 
 const Auth = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -18,6 +21,55 @@ const Auth = () => {
     password: '',
     rememberMe: false
   });
+  const [translations, setTranslations] = useState({
+    backToHome: 'Back to Home',
+    welcomeToMiniMed: 'Welcome to MiniMed',
+    signInDescription: 'Sign in to access your diabetes management dashboard',
+    email: 'Email',
+    enterEmail: 'Enter your email',
+    password: 'Password',
+    enterPassword: 'Enter your password',
+    rememberMe: 'Remember me',
+    signIn: 'Sign In',
+    signingIn: 'Signing in...',
+    orContinueWith: 'Or continue with',
+    demoPatientAccount: 'Demo Patient Account',
+    demoHealthcareProvider: 'Demo Healthcare Provider',
+    forgotPassword: 'Forgot your password?',
+    dontHaveAccount: "Don't have an account?",
+    createAccount: 'Create account',
+    demoCredentials: 'Demo Credentials',
+    patient: 'Patient',
+    healthcareProvider: 'Healthcare Provider'
+  });
+
+  useEffect(() => {
+    const loadTranslations = async () => {
+      const newTranslations = {
+        backToHome: await t('Back to Home'),
+        welcomeToMiniMed: await t('Welcome to MiniMed'),
+        signInDescription: await t('Sign in to access your diabetes management dashboard'),
+        email: await t('Email'),
+        enterEmail: await t('Enter your email'),
+        password: await t('Password'),
+        enterPassword: await t('Enter your password'),
+        rememberMe: await t('Remember me'),
+        signIn: await t('Sign In'),
+        signingIn: await t('Signing in...'),
+        orContinueWith: await t('Or continue with'),
+        demoPatientAccount: await t('Demo Patient Account'),
+        demoHealthcareProvider: await t('Demo Healthcare Provider'),
+        forgotPassword: await t('Forgot your password?'),
+        dontHaveAccount: await t("Don't have an account?"),
+        createAccount: await t('Create account'),
+        demoCredentials: await t('Demo Credentials'),
+        patient: await t('Patient'),
+        healthcareProvider: await t('Healthcare Provider')
+      };
+      setTranslations(newTranslations);
+    };
+    loadTranslations();
+  }, [t]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +80,8 @@ const Auth = () => {
       await login(formData);
       navigate('/dashboard');
     } catch (err) {
-      setError('Invalid email or password. Try patient@example.com / demo123');
+      const errorMsg = await t('Invalid email or password. Try patient@example.com / demo123');
+      setError(errorMsg);
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +99,8 @@ const Auth = () => {
       await login(credentials);
       navigate('/dashboard');
     } catch (err) {
-      setError('Login failed. Please try again.');
+      const errorMsg = await t('Login failed. Please try again.');
+      setError(errorMsg);
     } finally {
       setIsLoading(false);
     }
@@ -56,11 +110,12 @@ const Auth = () => {
     <div className="min-h-screen bg-gradient-to-br from-medical-blue/5 via-white to-medical-lightBlue/5 flex flex-col">
       {/* Header */}
       <header className="p-4">
-        <div className="container mx-auto">
+        <div className="container mx-auto flex justify-between items-center">
           <Link to="/" className="inline-flex items-center space-x-2 text-gray-600 hover:text-medical-blue transition-colors">
             <ArrowLeft className="h-4 w-4" />
-            <span>Back to Home</span>
+            <span>{translations.backToHome}</span>
           </Link>
+          <LanguageDropdown />
         </div>
       </header>
 
@@ -73,9 +128,9 @@ const Auth = () => {
                 <span className="text-white font-bold text-xl">M</span>
               </div>
             </div>
-            <CardTitle className="text-2xl text-center">Welcome to MiniMed</CardTitle>
+            <CardTitle className="text-2xl text-center">{translations.welcomeToMiniMed}</CardTitle>
             <CardDescription className="text-center">
-              Sign in to access your diabetes management dashboard
+              {translations.signInDescription}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -88,11 +143,11 @@ const Auth = () => {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{translations.email}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={translations.enterEmail}
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
@@ -101,12 +156,12 @@ const Auth = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{translations.password}</Label>
                 <div className="relative">
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Enter your password"
+                    placeholder={translations.enterPassword}
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     required
@@ -131,7 +186,7 @@ const Auth = () => {
                   onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
                 />
                 <Label htmlFor="remember" className="text-sm font-normal cursor-pointer">
-                  Remember me
+                  {translations.rememberMe}
                 </Label>
               </div>
 
@@ -141,7 +196,7 @@ const Auth = () => {
                 className="w-full"
                 disabled={isLoading}
               >
-                {isLoading ? 'Signing in...' : 'Sign In'}
+                {isLoading ? translations.signingIn : translations.signIn}
               </Button>
             </form>
 
@@ -150,7 +205,7 @@ const Auth = () => {
                 <div className="w-full border-t border-gray-200"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                <span className="px-2 bg-white text-gray-500">{translations.orContinueWith}</span>
               </div>
             </div>
 
@@ -164,7 +219,7 @@ const Auth = () => {
               >
                 <div className="flex items-center justify-center space-x-2">
                   <div className="w-5 h-5 bg-medical-green rounded-full"></div>
-                  <span>Demo Patient Account</span>
+                  <span>{translations.demoPatientAccount}</span>
                 </div>
               </Button>
               <Button
@@ -176,7 +231,7 @@ const Auth = () => {
               >
                 <div className="flex items-center justify-center space-x-2">
                   <div className="w-5 h-5 bg-medical-blue rounded-full"></div>
-                  <span>Demo Healthcare Provider</span>
+                  <span>{translations.demoHealthcareProvider}</span>
                 </div>
               </Button>
             </div>
@@ -184,13 +239,13 @@ const Auth = () => {
           <CardFooter className="flex flex-col space-y-2">
             <div className="text-center text-sm text-gray-600">
               <a href="#" className="hover:text-medical-blue transition-colors">
-                Forgot your password?
+                {translations.forgotPassword}
               </a>
             </div>
             <div className="text-center text-sm text-gray-600">
-              Don't have an account?{' '}
+              {translations.dontHaveAccount}{' '}
               <a href="#" className="text-medical-blue hover:underline">
-                Create account
+                {translations.createAccount}
               </a>
             </div>
           </CardFooter>
@@ -202,10 +257,10 @@ const Auth = () => {
         <div className="container mx-auto max-w-md">
           <Card className="bg-blue-50 border-blue-200">
             <CardContent className="pt-6">
-              <h3 className="font-semibold text-blue-900 mb-2">Demo Credentials</h3>
+              <h3 className="font-semibold text-blue-900 mb-2">{translations.demoCredentials}</h3>
               <div className="space-y-1 text-sm text-blue-700">
-                <p><strong>Patient:</strong> patient@example.com / demo123</p>
-                <p><strong>Healthcare Provider:</strong> doctor@example.com / demo123</p>
+                <p><strong>{translations.patient}:</strong> patient@example.com / demo123</p>
+                <p><strong>{translations.healthcareProvider}:</strong> doctor@example.com / demo123</p>
               </div>
             </CardContent>
           </Card>

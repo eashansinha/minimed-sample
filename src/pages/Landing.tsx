@@ -1,19 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useLanguage, Language } from '@/contexts/LanguageContext';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageDropdown from '@/components/LanguageDropdown';
 import { 
   Activity, 
   Shield, 
   Smartphone, 
   Share2, 
-  ChevronDown,
-  Globe,
   Menu,
   X
 } from 'lucide-react';
@@ -21,37 +14,28 @@ import { useState } from 'react';
 
 const Landing = () => {
   const navigate = useNavigate();
-  const { language, setLanguage, t } = useLanguage();
+  const { tSync } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const languages: { code: Language; label: string; flag: string }[] = [
-    { code: 'en', label: 'English', flag: '🇺🇸' },
-    { code: 'es', label: 'Español', flag: '🇪🇸' },
-    { code: 'fr', label: 'Français', flag: '🇫🇷' },
-    { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-  ];
-
-  const currentLanguage = languages.find(l => l.code === language);
 
   const features = [
     {
       icon: Activity,
-      title: t('features.monitoring'),
+      title: tSync('features.monitoring'),
       description: 'Track glucose levels continuously with advanced CGM integration'
     },
     {
       icon: Shield,
-      title: t('features.delivery'),
+      title: tSync('features.delivery'),
       description: 'Smart insulin delivery that adapts to your body\'s needs'
     },
     {
       icon: Share2,
-      title: t('features.sharing'),
+      title: tSync('features.sharing'),
       description: 'Share real-time data with your healthcare team'
     },
     {
       icon: Smartphone,
-      title: t('features.mobile'),
+      title: tSync('features.mobile'),
       description: 'Stay connected with mobile app integration'
     }
   ];
@@ -73,40 +57,20 @@ const Landing = () => {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               <a href="#" className="text-gray-600 hover:text-medical-blue transition-colors">
-                {t('nav.products')}
+                {tSync('nav.products')}
               </a>
               <a href="#" className="text-gray-600 hover:text-medical-blue transition-colors">
-                {t('nav.support')}
+                {tSync('nav.support')}
               </a>
               <a href="#" className="text-gray-600 hover:text-medical-blue transition-colors">
-                {t('nav.healthcare')}
+                {tSync('nav.healthcare')}
               </a>
             </nav>
 
             {/* Right Section */}
             <div className="flex items-center space-x-4">
               {/* Language Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="hidden md:flex items-center space-x-2">
-                    <Globe className="h-4 w-4" />
-                    <span>{currentLanguage?.flag} {currentLanguage?.label}</span>
-                    <ChevronDown className="h-3 w-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {languages.map((lang) => (
-                    <DropdownMenuItem
-                      key={lang.code}
-                      onClick={() => setLanguage(lang.code)}
-                      className="flex items-center space-x-2"
-                    >
-                      <span>{lang.flag}</span>
-                      <span>{lang.label}</span>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <LanguageDropdown className="hidden md:flex" />
 
               {/* Sign In Button */}
               <Button 
@@ -114,7 +78,7 @@ const Landing = () => {
                 onClick={() => navigate('/auth')}
                 className="hidden md:inline-flex"
               >
-                {t('nav.signin')}
+                {tSync('nav.signin')}
               </Button>
 
               {/* Mobile Menu Button */}
@@ -133,42 +97,23 @@ const Landing = () => {
           <div className="md:hidden bg-white border-t">
             <div className="px-4 py-2 space-y-1">
               <a href="#" className="block py-2 text-gray-600">
-                {t('nav.products')}
+                {tSync('nav.products')}
               </a>
               <a href="#" className="block py-2 text-gray-600">
-                {t('nav.support')}
+                {tSync('nav.support')}
               </a>
               <a href="#" className="block py-2 text-gray-600">
-                {t('nav.healthcare')}
+                {tSync('nav.healthcare')}
               </a>
               <div className="py-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="w-full justify-start">
-                      <Globe className="h-4 w-4 mr-2" />
-                      <span>{currentLanguage?.flag} {currentLanguage?.label}</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-full">
-                    {languages.map((lang) => (
-                      <DropdownMenuItem
-                        key={lang.code}
-                        onClick={() => setLanguage(lang.code)}
-                        className="flex items-center space-x-2"
-                      >
-                        <span>{lang.flag}</span>
-                        <span>{lang.label}</span>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <LanguageDropdown variant="mobile" />
               </div>
               <Button 
                 variant="medical" 
                 onClick={() => navigate('/auth')}
                 className="w-full"
               >
-                {t('nav.signin')}
+                {tSync('nav.signin')}
               </Button>
             </div>
           </div>
@@ -181,10 +126,10 @@ const Landing = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                {t('hero.title')}
+                {tSync('hero.title')}
               </h1>
               <p className="text-xl text-gray-600">
-                {t('hero.subtitle')}
+                {tSync('hero.subtitle')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
@@ -193,7 +138,7 @@ const Landing = () => {
                   onClick={() => navigate('/auth')}
                   className="text-lg px-8"
                 >
-                  {t('hero.cta')}
+                  {tSync('hero.cta')}
                 </Button>
                 <Button 
                   size="lg" 
