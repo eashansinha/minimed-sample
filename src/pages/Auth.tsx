@@ -107,11 +107,11 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-medical-blue/5 via-white to-medical-lightBlue/5 flex flex-col">
+    <div className="min-h-screen bg-gradient-minimed flex flex-col">
       {/* Header */}
       <header className="p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <Link to="/" className="inline-flex items-center space-x-2 text-gray-600 hover:text-medical-blue transition-colors">
+          <Link to="/" className="inline-flex items-center space-x-2 text-medtronic-deepPurple hover:text-medtronic-purple transition-colors font-medium">
             <ArrowLeft className="h-4 w-4" />
             <span>{translations.backToHome}</span>
           </Link>
@@ -121,15 +121,15 @@ const Auth = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md shadow-xl">
+        <Card className="w-full max-w-md shadow-2xl bg-white/95 backdrop-blur-sm border-0">
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-12 h-12 bg-medical-blue rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">M</span>
+              <div className="w-16 h-16 bg-gradient-to-br from-medtronic-brightBlue to-medtronic-skyBlue rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-2xl">M</span>
               </div>
             </div>
-            <CardTitle className="text-2xl text-center">{translations.welcomeToMiniMed}</CardTitle>
-            <CardDescription className="text-center">
+            <CardTitle className="text-3xl text-center font-light text-medtronic-deepPurple">{translations.welcomeToMiniMed}</CardTitle>
+            <CardDescription className="text-center text-medtronic-purple">
               {translations.signInDescription}
             </CardDescription>
           </CardHeader>

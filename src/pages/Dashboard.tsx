@@ -161,19 +161,19 @@ const Dashboard = () => {
     switch (trend) {
       case 'rising':
       case 'rising_quickly':
-        return <ArrowUp className="h-4 w-4 text-orange-500" />;
+        return <ArrowUp className="h-4 w-4 text-medtronic-coral" />;
       case 'falling':
       case 'falling_quickly':
-        return <ArrowDown className="h-4 w-4 text-blue-500" />;
+        return <ArrowDown className="h-4 w-4 text-medtronic-brightBlue" />;
       default:
-        return <Minus className="h-4 w-4 text-green-500" />;
+        return <Minus className="h-4 w-4 text-medical-green" />;
     }
   };
 
   const getGlucoseColor = (value: number) => {
     if (value < 70) return 'text-red-600';
-    if (value > 180) return 'text-orange-600';
-    return 'text-green-600';
+    if (value > 180) return 'text-medtronic-coral';
+    return 'text-medical-green';
   };
 
   // Prepare chart data
@@ -202,36 +202,33 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Navigation */}
-      <header className="sticky top-0 z-40 bg-white border-b">
-        <div className="flex items-center justify-between px-4 h-16">
+      <header className="sticky top-0 z-40 bg-gradient-medtronic shadow-md">
+        <div className="flex items-center justify-between px-4 h-20">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
+              className="lg:hidden p-2 hover:bg-white/20 rounded-lg text-white"
             >
               <Menu className="h-5 w-5" />
             </button>
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-medical-blue rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">M</span>
-              </div>
-              <span className="text-xl font-semibold text-gray-900">MiniMed Dashboard</span>
+              <span className="text-2xl font-bold text-white">MiniMed<span className="text-xs align-super">™</span> Dashboard</span>
             </div>
           </div>
 
           <div className="flex items-center space-x-4">
             <LanguageDropdown />
             
-            <button className="relative p-2 hover:bg-gray-100 rounded-lg">
-              <Bell className="h-5 w-5 text-gray-600" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            <button className="relative p-2 hover:bg-white/20 rounded-lg">
+              <Bell className="h-5 w-5 text-white" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-medtronic-coral rounded-full"></span>
             </button>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-medical-blue rounded-full flex items-center justify-center">
-                    <User className="h-4 w-4 text-white" />
+                <Button variant="ghost" className="flex items-center space-x-2 text-white hover:bg-white/20">
+                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                    <User className="h-4 w-4 text-medtronic-deepPurple" />
                   </div>
                   <span className="hidden md:inline">{user?.name}</span>
                   <ChevronDown className="h-4 w-4" />
@@ -263,7 +260,7 @@ const Dashboard = () => {
         {/* Sidebar */}
         <aside className={`${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-30 w-64 bg-white border-r transition-transform duration-300 mt-16 lg:mt-0`}>
+        } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-30 w-64 bg-white border-r transition-transform duration-300 mt-20 lg:mt-0`}>
           <div className="p-4">
             <nav className="space-y-1">
               {sidebarItems.map((item, index) => (
@@ -271,7 +268,7 @@ const Dashboard = () => {
                   key={index}
                   className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
                     item.active 
-                      ? 'bg-medical-blue/10 text-medical-blue' 
+                      ? 'bg-gradient-to-r from-medtronic-lightCyan to-medtronic-skyBlue text-medtronic-deepPurple font-semibold' 
                       : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >

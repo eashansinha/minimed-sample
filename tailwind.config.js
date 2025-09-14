@@ -51,13 +51,44 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Medtronic/MiniMed inspired colors
+        medtronic: {
+          deepPurple: "#140066",
+          purple: "#2D0B8E",
+          brightBlue: "#1010EB",
+          skyBlue: "#87CEEB",
+          lightCyan: "#B3E5FC",
+          coral: "#FF7F50",
+          peach: "#FFB6A3",
+        },
         medical: {
-          blue: "#1e40af",
-          lightBlue: "#3b82f6",
+          blue: "#1010EB",
+          lightBlue: "#4A90E2",
           green: "#10b981",
-          orange: "#f59e0b",
+          orange: "#FF7F50",
           red: "#ef4444",
         }
+      },
+      fontFamily: {
+        'sans': ['Avenir Next', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        'display': ['Avenir Next', 'Helvetica Neue', 'sans-serif'],
+        'body': ['Avenir Next', 'Helvetica', 'Arial', 'sans-serif'],
+      },
+      fontSize: {
+        'xs': '.75rem',
+        'sm': '.875rem',
+        'base': '15px',
+        'lg': '1.125rem',
+        'xl': '1.25rem',
+        '2xl': '1.5rem',
+        '3xl': '2rem',
+        '4xl': '2.75rem',
+        '5xl': '3.5rem',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-medtronic': 'linear-gradient(135deg, #140066 0%, #1010EB 100%)',
+        'gradient-minimed': 'linear-gradient(135deg, #87CEEB 0%, #B3E5FC 100%)',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -80,5 +111,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 }
