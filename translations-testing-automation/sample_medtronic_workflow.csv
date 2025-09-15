@@ -1,0 +1,6 @@
+Screen/Page,Section,String,Language,Misc
+Landing,Hero Section,Learn More,Spanish,Highlight button only
+Landing,Features,Track glucose levels continuously,French,Highlight full text
+Auth,Login Form,Don't have an account?,French,Highlight text only
+Dashboard,Activity Feed,BasalDelivery,German,Highlight all instances
+Dashboard,Glucose Chart,value,French,Highlight tooltip text
