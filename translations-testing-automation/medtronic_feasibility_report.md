@@ -10,7 +10,7 @@
 - **Status**: Fully validated
 - **Evidence**: Successfully parsed sample CSV with 5 workflow items across 3 languages and 3 pages
 - **Implementation**: Python script demonstrated complete CSV processing and workflow plan generation
-- **File**: `/home/ubuntu/workflow_test.py` - 100% success rate
+- **File**: `workflow_test.py` - 100% success rate
 
 ### ✅ Browser Navigation & Language Switching
 - **Status**: Fully validated  
@@ -41,7 +41,7 @@
 - **Status**: Fully validated
 - **Evidence**: Multiple screenshots captured with highlighting visible
 - **Implementation**: Built-in browser screenshot functionality
-- **File**: `/home/ubuntu/screenshots/localhost_5174_210015.png` shows red-highlighted button
+- **File**: `screenshots/example_screenshot.png` shows red-highlighted button
 
 ## Implementation Approaches
 

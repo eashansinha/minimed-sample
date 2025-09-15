@@ -50,7 +50,7 @@ def generate_workflow_plan(workflow_items):
     return plan
 
 def main():
-    csv_path = '/home/ubuntu/sample_medtronic_workflow.csv'
+    csv_path = Path(__file__).parent / 'sample_medtronic_workflow.csv'
     
     print("=== Medtronic Workflow Proof of Concept ===")
     print(f"Parsing CSV file: {csv_path}")
@@ -70,7 +70,7 @@ def main():
         for step in plan['workflow_steps']:
             print(f"Step {step['step_number']}: {step['target_page']} → {step['target_section']} → '{step['target_string']}' ({step['language']})")
         
-        plan_path = '/home/ubuntu/medtronic_workflow_plan.json'
+        plan_path = Path(__file__).parent / 'medtronic_workflow_plan.json'
         with open(plan_path, 'w', encoding='utf-8') as f:
             json.dump(plan, f, indent=2, ensure_ascii=False)
         

@@ -3,7 +3,7 @@ const path = require('path');
 const { parse } = require('csv-parse/sync');
 
 // Configuration
-const BASE_URL = 'http://localhost:5173';
+const BASE_URL = process.env.BASE_URL || 'http://localhost:5173';
 const CSV_FILE = 'sample_medtronic_workflow.csv';
 const SCREENSHOTS_DIR = 'screenshots';
 
@@ -22,13 +22,17 @@ if (!fs.existsSync(SCREENSHOTS_DIR)) {
 
 // Read and parse CSV file
 function parseCSV() {
-  const csvContent = fs.readFileSync(CSV_FILE, 'utf-8');
+  try {
+    const csvContent = fs.readFileSync(CSV_FILE, 'utf-8');
   const records = parse(csvContent, {
     columns: true,
     skip_empty_lines: true,
     trim: true
   });
   return records;
+  } catch (error) {
+    throw new Error(`Failed to read CSV file: ${error.message}`);
+  }
 }
 
 // Generate screenshot filename
